@@ -490,6 +490,43 @@
 
         .cv-inline em { color: var(--text-primary); font-style: italic; }
 
+        /* ===== CV Collapsible ===== */
+        .cv-expandable {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        .cv-expandable.open {
+            max-height: 2000px;
+        }
+
+        .cv-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.45rem 1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-top: 0.5rem;
+        }
+        .cv-toggle:hover {
+            background: var(--tag-bg);
+            border-color: var(--accent);
+        }
+        .cv-toggle .arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        .cv-toggle.open .arrow {
+            transform: rotate(180deg);
+        }
+
         /* ===== Footer ===== */
         footer {
             max-width: var(--max-width);
@@ -622,36 +659,36 @@
         <div class="subsection-header">// Published Papers (English)</div>
         <ol class="pub-list english" reversed>
             <li class="pub-item">
-                <div class="pub-title">"How Progressive Is the Most Popular Tax Scheme? The Case of South Korea"</div>
+                <div class="pub-title"><a href="https://doi.org/10.15057/hje.2023001" target="_blank">"How Progressive Is the Most Popular Tax Scheme? The Case of South Korea"</a></div>
                 <div class="pub-meta">2023, <em>Hitotsubashi Journal of Economics</em>, vol. 64, no. 1, 1&ndash;17.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"Coverage Expansion of Universal Health Care and Its Impacts on Health Insurance Market and Welfare: The Case of South Korea"</div>
+                <div class="pub-title"><a href="https://doi.org/10.15057/hje.2021007" target="_blank">"Coverage Expansion of Universal Health Care and Its Impacts on Health Insurance Market and Welfare: The Case of South Korea"</a></div>
                 <div class="pub-meta">2021, <em>Hitotsubashi Journal of Economics</em>, vol. 62, no. 2, 141&ndash;161.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"Cost-effective Mortgage Modification Program to Reduce Mortgage Defaults"</div>
+                <div class="pub-title"><a href="https://doi.org/10.1016/j.econmod.2020.12.030" target="_blank">"Cost-effective Mortgage Modification Program to Reduce Mortgage Defaults"</a></div>
                 <div class="pub-coauthor">with Jiseob Kim</div>
                 <div class="pub-meta">2021, <em>Economic Modelling</em>, vol. 96, 220&ndash;241.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"The Rise of Single-person Households and the Macroeconomic Consequences"</div>
+                <div class="pub-title"><a href="https://doi.org/10.15057/30890" target="_blank">"The Rise of Single-person Households and the Macroeconomic Consequences"</a></div>
                 <div class="pub-meta">2019, <em>Hitotsubashi Journal of Economics</em>, vol. 60, no. 2, 189&ndash;198.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"Housing as Collateral, Financial Constraints, and Small Businesses"</div>
+                <div class="pub-title"><a href="https://doi.org/10.1016/j.red.2018.03.001" target="_blank">"Housing as Collateral, Financial Constraints, and Small Businesses"</a></div>
                 <div class="pub-meta">2018, <em>Review of Economic Dynamics</em>, vol. 30, 68&ndash;85.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"Growth, Financial Development, and Housing Booms"</div>
+                <div class="pub-title"><a href="https://doi.org/10.1016/j.econmod.2017.09.008" target="_blank">"Growth, Financial Development, and Housing Booms"</a></div>
                 <div class="pub-meta">2018, <em>Economic Modelling</em>, vol. 69, 91&ndash;102.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"Macroeconomic Effects of Expansion of Universal Health Care: The Case of South Korea"</div>
+                <div class="pub-title"><a href="https://doi.org/10.15057/28953" target="_blank">"Macroeconomic Effects of Expansion of Universal Health Care: The Case of South Korea"</a></div>
                 <div class="pub-meta">2017, <em>Hitotsubashi Journal of Economics</em>, vol. 58, no. 2, 143&ndash;161.</div>
             </li>
             <li class="pub-item">
-                <div class="pub-title">"Population Aging in Korea: Macroeconomic Impacts and Financing National Health Insurance"</div>
+                <div class="pub-title"><a href="https://ideas.repec.org/a/kea/keappr/v32y2016i2p331-354.html" target="_blank">"Population Aging in Korea: Macroeconomic Impacts and Financing National Health Insurance"</a></div>
                 <div class="pub-meta">2016, <em>The Korean Economic Review</em>, vol. 32, no. 2, 355&ndash;382.</div>
             </li>
         </ol>
@@ -724,7 +761,13 @@
                 <div class="cv-entry-main">
                     <div class="cv-entry-title">Associate Professor, Dongguk University, Korea</div>
                 </div>
-                <div class="cv-entry-year">2018 &ndash; present</div>
+                <div class="cv-entry-year">2024 &ndash; present</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-title">Assistant Professor, Dongguk University, Korea</div>
+                </div>
+                <div class="cv-entry-year">2018 &ndash; 2024</div>
             </div>
             <div class="cv-entry">
                 <div class="cv-entry-main">
@@ -760,27 +803,20 @@
             </div>
         </div>
 
+        <button class="cv-toggle" id="cvToggle" onclick="toggleCV()">
+            <span class="arrow">&#9660;</span> Show more
+        </button>
+
+        <div class="cv-expandable" id="cvExpandable">
+
         <!-- Teaching Experience -->
-        <div class="cv-block">
+        <div class="cv-block" style="margin-top:1.5rem;">
             <div class="cv-block-title">Teaching Experience</div>
             <div class="cv-entry">
                 <div class="cv-entry-main">
                     <div class="cv-entry-title">Dongguk University</div>
-                    <div class="cv-entry-sub">Macroeconomics (UG), Special Topics in Macroeconomics (G)</div>
+                    <div class="cv-entry-sub">Macroeconomics (G), Macroeconomics (UG), Computational Macroeconomics with Python: RBC Model Practice (UG)</div>
                 </div>
-                <div class="cv-entry-year">2020 &ndash; 2023</div>
-            </div>
-            <div class="cv-entry">
-                <div class="cv-entry-main">
-                    <div class="cv-entry-sub">Macroeconomics (UG), Principles of Macroeconomics (UG), Advanced Macroeconomics (G)</div>
-                </div>
-                <div class="cv-entry-year">2019</div>
-            </div>
-            <div class="cv-entry">
-                <div class="cv-entry-main">
-                    <div class="cv-entry-sub">Macroeconomics (UG), Principles of Macroeconomics (UG)</div>
-                </div>
-                <div class="cv-entry-year">2018</div>
             </div>
         </div>
 
@@ -840,6 +876,8 @@
             <div class="cv-block-title">Languages</div>
             <div class="cv-inline">English (fluent), Korean (native)</div>
         </div>
+
+        </div><!-- end cv-expandable -->
     </section>
 
 </main>
@@ -886,6 +924,16 @@
             navLinks.classList.remove('open');
         });
     });
+
+    // CV expandable toggle
+    function toggleCV() {
+        const expandable = document.getElementById('cvExpandable');
+        const btn = document.getElementById('cvToggle');
+        expandable.classList.toggle('open');
+        btn.classList.toggle('open');
+        btn.querySelector('.arrow').textContent = expandable.classList.contains('open') ? '\u25B2' : '\u25BC';
+        btn.childNodes[btn.childNodes.length - 1].textContent = expandable.classList.contains('open') ? ' Show less' : ' Show more';
+    }
 
     // Active nav highlight on scroll
     const sections = document.querySelectorAll('section[id]');
