@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taejun Lim | Economist &amp; Computational Researcher</title>
+    <meta name="description" content="Taejun Lim - Associate Professor, Department of Economics, Dongguk University. Macroeconomics, Health Insurance, Financial Economics.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-body: 'Inter', sans-serif;
+            --transition: 0.3s ease;
+            --max-width: 960px;
+            --nav-height: 60px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2333;
+            --bg-code: #1e293b;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-teal: #2dd4bf;
+            --accent-purple: #bc8cff;
+            --accent-orange: #f0883e;
+            --border: #30363d;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --tag-bg: rgba(88, 166, 255, 0.12);
+            --tag-border: rgba(88, 166, 255, 0.3);
+            --highlight: #ffd700;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f8fa;
+            --bg-card: #ffffff;
+            --bg-code: #f1f5f9;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --accent: #2563eb;
+            --accent-green: #16a34a;
+            --accent-teal: #0d9488;
+            --accent-purple: #7c3aed;
+            --accent-orange: #ea580c;
+            --border: #d1d5db;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --tag-bg: rgba(37, 99, 235, 0.08);
+            --tag-border: rgba(37, 99, 235, 0.25);
+            --highlight: #b45309;
+        }
+
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
+        a:hover { color: var(--accent-teal); }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: background var(--transition), border-color var(--transition);
+        }
+
+        .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--accent-green);
+            letter-spacing: -0.5px;
+        }
+        .nav-logo span { color: var(--text-muted); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            transition: all var(--transition);
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+            background: var(--tag-bg);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            cursor: pointer;
+            padding: 0.35rem 0.55rem;
+            border-radius: 6px;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        .theme-toggle:hover {
+            color: var(--highlight);
+            border-color: var(--highlight);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== Main ===== */
+        main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: calc(var(--nav-height) + 2rem) 1.5rem 3rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            display: flex;
+            gap: 2.5rem;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+        }
+
+        .hero-photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .hero-text { flex: 1; }
+
+        .hero h1 {
+            font-family: var(--font-mono);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-title {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.15rem;
+        }
+
+        .hero-affiliation {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-line {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+        }
+        .terminal-line .prompt { color: var(--accent-teal); }
+        .terminal-line .cmd { color: var(--text-primary); }
+        .terminal-line .output { color: var(--accent-green); }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.1em;
+            background: var(--accent-green);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0; }
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+        .contact-row span { display: flex; align-items: center; gap: 0.35rem; }
+
+        .profile-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .profile-links a {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+        }
+        .profile-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--tag-bg);
+        }
+
+        /* ===== Section Headers ===== */
+        .section-header {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-header .hash { color: var(--accent-teal); font-weight: 400; }
+
+        .subsection-header {
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            color: var(--accent-purple);
+            margin: 1.5rem 0 1rem;
+            font-weight: 600;
+        }
+
+        /* ===== Skill Tags ===== */
+        .skills-section {
+            margin-bottom: 2rem;
+        }
+
+        .skills-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.6rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.65rem;
+            border-radius: 6px;
+            background: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            color: var(--accent);
+            transition: all var(--transition);
+        }
+        .skill-tag.highlight {
+            background: rgba(63, 185, 80, 0.12);
+            border-color: rgba(63, 185, 80, 0.35);
+            color: var(--accent-green);
+        }
+
+        /* ===== Research Interests ===== */
+        .interests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
+        }
+
+        .interest-tag {
+            font-size: 0.9rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        /* ===== Publications ===== */
+        .pub-list {
+            list-style: none;
+            counter-reset: pub-counter;
+        }
+
+        .pub-list.english  { counter-reset: pub-counter 9; }
+        .pub-list.korean   { counter-reset: pub-counter 4; }
+        .pub-list.working  { counter-reset: pub-counter; }
+
+        .pub-item {
+            counter-increment: pub-counter -1;
+            position: relative;
+            padding: 1rem 1.25rem 1rem 3.5rem;
+            margin-bottom: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all var(--transition);
+        }
+        .pub-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 2px 12px var(--shadow);
+        }
+
+        .pub-item::before {
+            content: "[" counter(pub-counter) "]";
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-teal);
+            position: absolute;
+            left: 1rem;
+            top: 1.1rem;
+        }
+
+        .pub-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .pub-meta {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .pub-meta em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .pub-coauthor {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Working papers: bullet style instead of counter */
+        .pub-list.working .pub-item { padding-left: 1.25rem; }
+        .pub-list.working .pub-item::before { content: none; }
+
+        /* ===== Teaching ===== */
+        .teaching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .teaching-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            transition: all var(--transition);
+        }
+        .teaching-card:hover {
+            border-color: var(--accent);
+        }
+
+        .teaching-level {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .teaching-course {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .teaching-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== CV Section ===== */
+        .cv-block {
+            margin-bottom: 2rem;
+        }
+
+        .cv-block-title {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .cv-entry {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .cv-entry:last-child { border-bottom: none; }
+
+        .cv-entry-main { flex: 1; }
+
+        .cv-entry-title { font-weight: 500; }
+
+        .cv-entry-sub {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .cv-entry-year {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .cv-inline {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .cv-inline em { color: var(--text-primary); font-style: italic; }
+
+        /* ===== Footer ===== */
+        footer {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .hero-photo { width: 130px; height: 130px; }
+            .hero h1 { font-size: 1.7rem; }
+            .contact-row { justify-content: center; }
+            .profile-links { justify-content: center; }
+            .terminal-line { font-size: 0.78rem; }
+
+            .teaching-grid { grid-template-columns: 1fr; }
+
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: var(--nav-height);
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                border-bottom: 1px solid var(--border);
+                padding: 1rem;
+                gap: 0.25rem;
+            }
+            .hamburger { display: block; }
+
+            .cv-entry { flex-direction: column; gap: 0.15rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.4rem; }
+            .section-header { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav>
+    <div class="nav-inner">
+        <div class="nav-logo">~/taejun<span>.lim</span></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#teaching">Teaching</a></li>
+            <li><a href="#cv">CV</a></li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">&#9789;</button>
+            <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== Main Content ===== -->
+<main>
+
+    <!-- Hero -->
+    <section id="home" class="hero">
+        <img src="profile.jpg" alt="Taejun Lim" class="hero-photo">
+        <div class="hero-text">
+            <h1>Taejun Lim</h1>
+            <div class="hero-title">Associate Professor</div>
+            <div class="hero-affiliation">Department of Economics, Dongguk University, Seoul 04620, Korea</div>
+
+            <div class="terminal-line">
+                <span class="prompt">$ </span><span class="cmd">whoami</span>
+                <br>
+                <span class="output">&gt; economist &amp; computational researcher</span><span class="cursor"></span>
+            </div>
+
+            <div class="contact-row">
+                <span>&#9993; limtaejun[at]gmail[dot]com</span>
+                <span>&#9742; +82-2-2260-3271</span>
+            </div>
+
+            <div class="profile-links">
+                <a href="https://scholar.google.co.kr/citations?user=a8E4VpwAAAAJ&hl=en" target="_blank">Google Scholar</a>
+                <a href="https://github.com/limtaejun-econ" target="_blank">GitHub</a>
+                <a href="https://orcid.org/0000-0002-8659-0907" target="_blank">ORCID</a>
+                <a href="https://ideas.repec.org/f/pli1107.html" target="_blank">RePEc</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Interests & Skills -->
+    <section id="interests">
+        <div class="section-header"><span class="hash">#</span> Research Interests</div>
+        <div class="interests">
+            <span class="interest-tag">Macroeconomics</span>
+            <span class="interest-tag">Health Insurance</span>
+            <span class="interest-tag">Financial Economics</span>
+            <span class="interest-tag">Entrepreneurship</span>
+        </div>
+
+        <div class="skills-section">
+            <div class="skills-label">Computational Skills</div>
+            <div class="skill-tags">
+                <span class="skill-tag highlight">Fortran</span>
+                <span class="skill-tag highlight">Python</span>
+                <span class="skill-tag highlight">GPGPU</span>
+                <span class="skill-tag highlight">OpenACC</span>
+                <span class="skill-tag highlight">OpenMP</span>
+                <span class="skill-tag">R</span>
+                <span class="skill-tag">Matlab</span>
+                <span class="skill-tag">Stata</span>
+                <span class="skill-tag">SAS</span>
+                <span class="skill-tag">Eviews</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research -->
+    <section id="research">
+        <div class="section-header"><span class="hash">#</span> Research</div>
+
+        <div class="subsection-header">// Published Papers (English)</div>
+        <ol class="pub-list english" reversed>
+            <li class="pub-item">
+                <div class="pub-title">"How Progressive Is the Most Popular Tax Scheme? The Case of South Korea"</div>
+                <div class="pub-meta">2023, <em>Hitotsubashi Journal of Economics</em>, vol. 64, no. 1, 1&ndash;17.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Coverage Expansion of Universal Health Care and Its Impacts on Health Insurance Market and Welfare: The Case of South Korea"</div>
+                <div class="pub-meta">2021, <em>Hitotsubashi Journal of Economics</em>, vol. 62, no. 2, 141&ndash;161.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Cost-effective Mortgage Modification Program to Reduce Mortgage Defaults"</div>
+                <div class="pub-coauthor">with Jiseob Kim</div>
+                <div class="pub-meta">2021, <em>Economic Modelling</em>, vol. 96, 220&ndash;241.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"The Rise of Single-person Households and the Macroeconomic Consequences"</div>
+                <div class="pub-meta">2019, <em>Hitotsubashi Journal of Economics</em>, vol. 60, no. 2, 189&ndash;198.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Housing as Collateral, Financial Constraints, and Small Businesses"</div>
+                <div class="pub-meta">2018, <em>Review of Economic Dynamics</em>, vol. 30, 68&ndash;85.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Growth, Financial Development, and Housing Booms"</div>
+                <div class="pub-meta">2018, <em>Economic Modelling</em>, vol. 69, 91&ndash;102.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Macroeconomic Effects of Expansion of Universal Health Care: The Case of South Korea"</div>
+                <div class="pub-meta">2017, <em>Hitotsubashi Journal of Economics</em>, vol. 58, no. 2, 143&ndash;161.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Population Aging in Korea: Macroeconomic Impacts and Financing National Health Insurance"</div>
+                <div class="pub-meta">2016, <em>The Korean Economic Review</em>, vol. 32, no. 2, 355&ndash;382.</div>
+            </li>
+        </ol>
+
+        <div class="subsection-header">// Published Papers (Korean)</div>
+        <ol class="pub-list korean" reversed>
+            <li class="pub-item">
+                <div class="pub-title">"Macroeconomic Impacts of the Reform of National Basic Livelihood Security System"</div>
+                <div class="pub-coauthor">with Jung-Taek Lee</div>
+                <div class="pub-meta">2021, <em>Journal of Insurance and Finance</em>, vol. 32, no. 3, 95&ndash;122.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Quantifying Macroeconomic Impact of Housing Demand Shock in Korea"</div>
+                <div class="pub-meta">2020, <em>Journal of Insurance and Finance</em>, vol. 31, no. 2, 25&ndash;58.</div>
+            </li>
+            <li class="pub-item">
+                <div class="pub-title">"Effects of Retirement on Cognitive Functions"</div>
+                <div class="pub-coauthor">with Jung-Taek Lee</div>
+                <div class="pub-meta">2020, <em>Health and Social Science</em>, vol. 53, no. 1, 31&ndash;54.</div>
+            </li>
+        </ol>
+
+        <div class="subsection-header">// Working Papers</div>
+        <ul class="pub-list working">
+            <li class="pub-item">
+                <div class="pub-title">"How COVID-19 Affects Consumer Financial Health: Payday Loans and COVID-19 Economic Relief"</div>
+                <div class="pub-meta">2021.</div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Teaching -->
+    <section id="teaching">
+        <div class="section-header"><span class="hash">#</span> Teaching</div>
+        <div class="teaching-grid">
+            <div class="teaching-card">
+                <div class="teaching-level">Undergraduate</div>
+                <div class="teaching-course">Macroeconomics</div>
+                <div class="teaching-desc">Dongguk University</div>
+            </div>
+            <div class="teaching-card">
+                <div class="teaching-level">Undergraduate</div>
+                <div class="teaching-course">파이썬을 이용한 계산 거시경제학</div>
+                <div class="teaching-desc">RBC 모형실습 &mdash; Computational Macroeconomics with Python</div>
+            </div>
+            <div class="teaching-card">
+                <div class="teaching-level">Graduate</div>
+                <div class="teaching-course">Macroeconomics</div>
+                <div class="teaching-desc">Dongguk University</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CV -->
+    <section id="cv">
+        <div class="section-header"><span class="hash">#</span> Curriculum Vitae</div>
+
+        <!-- Employment -->
+        <div class="cv-block">
+            <div class="cv-block-title">Employment</div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-title">Associate Professor, Dongguk University, Korea</div>
+                </div>
+                <div class="cv-entry-year">2018 &ndash; present</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-title">Research Fellow, Korea Insurance Research Institute, Korea</div>
+                </div>
+                <div class="cv-entry-year">2015 &ndash; 2018</div>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="cv-block">
+            <div class="cv-block-title">Education</div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-title">Ph.D. in Economics, University of Rochester, USA</div>
+                    <div class="cv-entry-sub">Dissertation: <em>Essays on Housing Collateral and Macroeconomics</em> (Advisor: Professor Yan Bai)</div>
+                </div>
+                <div class="cv-entry-year">2015</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-title">B.A. in Business Administration, Yonsei University, Korea</div>
+                </div>
+                <div class="cv-entry-year">2007</div>
+            </div>
+        </div>
+
+        <!-- Professional Service -->
+        <div class="cv-block">
+            <div class="cv-block-title">Professional Service</div>
+            <div class="cv-inline">
+                Referee for: <em>Journal of Economic Theory</em>, <em>Review of Economic Dynamics</em>, <em>Economic Modelling</em>, <em>Korean Economic Review</em>.
+            </div>
+        </div>
+
+        <!-- Teaching Experience -->
+        <div class="cv-block">
+            <div class="cv-block-title">Teaching Experience</div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-title">Dongguk University</div>
+                    <div class="cv-entry-sub">Macroeconomics (UG), Special Topics in Macroeconomics (G)</div>
+                </div>
+                <div class="cv-entry-year">2020 &ndash; 2023</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-sub">Macroeconomics (UG), Principles of Macroeconomics (UG), Advanced Macroeconomics (G)</div>
+                </div>
+                <div class="cv-entry-year">2019</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main">
+                    <div class="cv-entry-sub">Macroeconomics (UG), Principles of Macroeconomics (UG)</div>
+                </div>
+                <div class="cv-entry-year">2018</div>
+            </div>
+        </div>
+
+        <!-- Fellowships & Awards -->
+        <div class="cv-block">
+            <div class="cv-block-title">Fellowships, Scholarships &amp; Awards</div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Research Grant, Dongguk University</div></div>
+                <div class="cv-entry-year">2021</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Research Grant, Dongguk University</div></div>
+                <div class="cv-entry-year">2019</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Research Grant, The Bank of Korea</div></div>
+                <div class="cv-entry-year">2019</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Start-up Research Fund, Dongguk University</div></div>
+                <div class="cv-entry-year">2018</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Research Grant, Korean National Research Foundation</div></div>
+                <div class="cv-entry-year">2018</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Graduate Fellowship and Tuition Scholarship, University of Rochester</div></div>
+                <div class="cv-entry-year">2008 &ndash; 2013</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Undergraduate Scholarship, the WILLBESS CO. LTD</div></div>
+                <div class="cv-entry-year">2005 &ndash; 2006</div>
+            </div>
+            <div class="cv-entry">
+                <div class="cv-entry-main"><div class="cv-entry-title">Award for Academic Excellence, Yonsei University</div></div>
+                <div class="cv-entry-year">2005</div>
+            </div>
+        </div>
+
+        <!-- Computer Skills -->
+        <div class="cv-block">
+            <div class="cv-block-title">Computer Skills</div>
+            <div class="skill-tags">
+                <span class="skill-tag highlight">Fortran</span>
+                <span class="skill-tag highlight">Python</span>
+                <span class="skill-tag highlight">GPGPU</span>
+                <span class="skill-tag highlight">OpenACC</span>
+                <span class="skill-tag highlight">OpenMP</span>
+                <span class="skill-tag">R</span>
+                <span class="skill-tag">Matlab</span>
+                <span class="skill-tag">Stata</span>
+                <span class="skill-tag">SAS</span>
+                <span class="skill-tag">Eviews</span>
+            </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="cv-block">
+            <div class="cv-block-title">Languages</div>
+            <div class="cv-inline">English (fluent), Korean (native)</div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===== Footer ===== -->
+<footer>
+    <p>&copy; 2025 Taejun Lim &middot; Built with HTML &amp; CSS</p>
+</footer>
+
+<!-- ===== JavaScript ===== -->
+<script>
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+        html.setAttribute('data-theme', saved);
+    }
+    updateIcon();
+
+    toggle.addEventListener('click', () => {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateIcon();
+    });
+
+    function updateIcon() {
+        const theme = html.getAttribute('data-theme');
+        toggle.textContent = theme === 'dark' ? '\u263D' : '\u2600';
+    }
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+    });
+
+    // Close menu on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // Active nav highlight on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const top = section.offsetTop - 100;
+            if (scrollY >= top) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === '#' + current) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
