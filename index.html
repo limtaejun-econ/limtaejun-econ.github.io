@@ -297,6 +297,117 @@
             box-shadow: 0 4px 12px var(--shadow);
         }
 
+        /* ===== Password Modal ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        .modal-title {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+        .modal-course {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .modal-input:focus {
+            border-color: var(--accent);
+        }
+        .modal-input.error {
+            border-color: #f85149;
+            animation: shake 0.4s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .modal-error {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #f85149;
+            margin-top: 0.4rem;
+            min-height: 1.2em;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition);
+            border: 1px solid var(--border);
+        }
+        .modal-btn-cancel {
+            background: none;
+            color: var(--text-secondary);
+        }
+        .modal-btn-cancel:hover {
+            background: var(--bg-secondary);
+        }
+        .modal-btn-submit {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .modal-btn-submit:hover {
+            opacity: 0.85;
+        }
+
+        /* Clickable teaching card indicator */
+        .teaching-card.clickable {
+            cursor: pointer;
+            position: relative;
+        }
+        .teaching-card.clickable::after {
+            content: '\1F4CE Lecture Notes';
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent-orange);
+            margin-top: 0.5rem;
+            display: block;
+        }
+
         .contact-row {
             display: flex;
             flex-wrap: wrap;
@@ -789,12 +900,12 @@
     <section id="teaching">
         <div class="section-header"><span class="hash">#</span> Teaching</div>
         <div class="teaching-grid">
-            <div class="teaching-card">
+            <div class="teaching-card clickable" data-course="macro" onclick="openNoteModal('macro')">
                 <div class="teaching-level">Undergraduate</div>
                 <div class="teaching-course">Macroeconomics</div>
                 <div class="teaching-desc">Dongguk University</div>
             </div>
-            <div class="teaching-card">
+            <div class="teaching-card clickable" data-course="python" onclick="openNoteModal('python')">
                 <div class="teaching-level">Undergraduate</div>
                 <div class="teaching-course">파이썬을 이용한 계산 거시경제학</div>
                 <div class="teaching-desc">RBC 모형실습 &mdash; Computational Macroeconomics with Python</div>
@@ -806,6 +917,20 @@
             </div>
         </div>
     </section>
+
+    <!-- Password Modal -->
+    <div class="modal-overlay" id="noteModal">
+        <div class="modal">
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-course" id="modalCourse"></div>
+            <input type="password" class="modal-input" id="modalPassword" placeholder="Enter password" autocomplete="off">
+            <div class="modal-error" id="modalError"></div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeNoteModal()">Cancel</button>
+                <button class="modal-btn modal-btn-submit" onclick="submitPassword()">Open</button>
+            </div>
+        </div>
+    </div>
 
     <!-- CV -->
     <section id="cv">
@@ -999,6 +1124,62 @@
                 item.classList.add('active');
             }
         });
+    });
+
+    // ===== Lecture Notes Modal =====
+    const courseConfig = {
+        macro: {
+            title: 'Macroeconomics',
+            desc: 'Undergraduate / Dongguk University',
+            password: 'macro2026',
+            url: 'https://drive.google.com/drive/folders/1POwWGbe63dXH9flqkIEgxvVJhaNF1SN6?usp=sharing'
+        },
+        python: {
+            title: '\ud30c\uc774\uc36c\uc744 \uc774\uc6a9\ud55c \uacc4\uc0b0 \uac70\uc2dc\uacbd\uc81c\ud559',
+            desc: 'Undergraduate / Dongguk University',
+            password: 'python2026',
+            url: 'https://drive.google.com/drive/folders/1l4EYPwbh-4My1_jokcW6HYMvKZDJdxUm?usp=drive_link'
+        }
+    };
+    let currentCourse = null;
+
+    function openNoteModal(courseKey) {
+        currentCourse = courseKey;
+        const cfg = courseConfig[courseKey];
+        document.getElementById('modalTitle').textContent = cfg.title;
+        document.getElementById('modalCourse').textContent = cfg.desc;
+        document.getElementById('modalPassword').value = '';
+        document.getElementById('modalError').textContent = '';
+        document.getElementById('modalPassword').classList.remove('error');
+        document.getElementById('noteModal').classList.add('active');
+        setTimeout(() => document.getElementById('modalPassword').focus(), 100);
+    }
+
+    function closeNoteModal() {
+        document.getElementById('noteModal').classList.remove('active');
+        currentCourse = null;
+    }
+
+    function submitPassword() {
+        const input = document.getElementById('modalPassword');
+        const cfg = courseConfig[currentCourse];
+        if (input.value === cfg.password) {
+            closeNoteModal();
+            window.open(cfg.url, '_blank');
+        } else {
+            input.classList.add('error');
+            document.getElementById('modalError').textContent = 'Incorrect password';
+            setTimeout(() => input.classList.remove('error'), 400);
+        }
+    }
+
+    document.getElementById('modalPassword').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitPassword();
+        if (e.key === 'Escape') closeNoteModal();
+    });
+
+    document.getElementById('noteModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeNoteModal();
     });
 
     // ===== Typing Animation =====
