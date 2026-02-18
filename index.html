@@ -161,11 +161,12 @@
             max-width: var(--max-width);
             margin: 0 auto;
             padding: calc(var(--nav-height) + 2rem) 1.5rem 3rem;
+            position: relative;
+            z-index: 1;
         }
 
         section {
             margin-bottom: 4rem;
-            animation: fadeUp 0.6s ease both;
         }
 
         @keyframes fadeUp {
@@ -239,6 +240,61 @@
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50%      { opacity: 0; }
+        }
+
+        /* ===== Scroll Reveal ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-d1 { transition-delay: 0.1s; }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; }
+        .reveal-d4 { transition-delay: 0.4s; }
+
+        /* ===== Background Canvas ===== */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== Enhanced Interactions ===== */
+        .pub-item {
+            transform: translateX(0);
+        }
+        .pub-item:hover {
+            transform: translateX(4px);
+        }
+        .teaching-card {
+            transform: translateY(0);
+        }
+        .teaching-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+        .hero-photo {
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color var(--transition);
+        }
+        .hero-photo:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+        .skill-tag {
+            transform: translateY(0);
+        }
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
         }
 
         .contact-row {
@@ -580,6 +636,9 @@
 </head>
 <body>
 
+<!-- ===== Particle Background ===== -->
+<canvas id="bgCanvas"></canvas>
+
 <!-- ===== Navigation ===== -->
 <nav>
     <div class="nav-inner">
@@ -608,10 +667,8 @@
             <div class="hero-title">Associate Professor</div>
             <div class="hero-affiliation">Department of Economics, Dongguk University, Seoul 04620, Korea</div>
 
-            <div class="terminal-line">
-                <span class="prompt">$ </span><span class="cmd">whoami</span>
-                <br>
-                <span class="output">&gt; economist &amp; computational researcher</span><span class="cursor"></span>
+            <div class="terminal-line" id="terminalLine">
+                <span class="prompt">$ </span><span class="cmd" id="termCmd"></span><span id="termBreak" style="display:none"><br></span><span class="output" id="termOutput"></span><span class="cursor"></span>
             </div>
 
             <div class="contact-row">
@@ -943,6 +1000,209 @@
             }
         });
     });
+
+    // ===== Typing Animation =====
+    (function() {
+        const cmdEl = document.getElementById('termCmd');
+        const breakEl = document.getElementById('termBreak');
+        const outputEl = document.getElementById('termOutput');
+        const cmdText = 'whoami';
+        const outputText = '> economist & computational researcher';
+        let i = 0;
+
+        function typeCmd() {
+            if (i < cmdText.length) {
+                cmdEl.textContent += cmdText[i];
+                i++;
+                setTimeout(typeCmd, 90);
+            } else {
+                setTimeout(() => {
+                    breakEl.style.display = '';
+                    i = 0;
+                    typeOutput();
+                }, 400);
+            }
+        }
+
+        function typeOutput() {
+            if (i < outputText.length) {
+                outputEl.textContent += outputText[i];
+                i++;
+                setTimeout(typeOutput, 30);
+            }
+        }
+
+        setTimeout(typeCmd, 600);
+    })();
+
+    // ===== Scroll Reveal with Intersection Observer =====
+    (function() {
+        // Apply reveal class to elements
+        const revealTargets = [
+            ...document.querySelectorAll('section'),
+            ...document.querySelectorAll('.pub-item'),
+            ...document.querySelectorAll('.teaching-card'),
+            ...document.querySelectorAll('.cv-block'),
+            ...document.querySelectorAll('.skills-section'),
+            ...document.querySelectorAll('.interests')
+        ];
+
+        revealTargets.forEach(el => el.classList.add('reveal'));
+
+        // Add staggered delays to grouped items
+        document.querySelectorAll('.teaching-card').forEach((card, idx) => {
+            card.classList.add('reveal-d' + (idx + 1));
+        });
+        document.querySelectorAll('.pub-item').forEach((item, idx) => {
+            const delay = (idx % 4) + 1;
+            item.classList.add('reveal-d' + delay);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Reveal hero immediately
+        const hero = document.getElementById('home');
+        if (hero) {
+            hero.classList.add('revealed');
+        }
+    })();
+
+    // ===== Particle Background =====
+    (function() {
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = -1000, mouseY = -1000;
+        let animId;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        document.addEventListener('mouseleave', () => {
+            mouseX = -1000;
+            mouseY = -1000;
+        });
+
+        const COUNT = Math.min(50, Math.floor(window.innerWidth * window.innerHeight / 25000));
+        const CONNECT_DIST = 140;
+        const MOUSE_DIST = 120;
+
+        for (let i = 0; i < COUNT; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                size: Math.random() * 1.5 + 0.5
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            const dotR = isDark ? 88 : 37;
+            const dotG = isDark ? 166 : 99;
+            const dotB = isDark ? 255 : 235;
+            const dotAlpha = isDark ? 0.35 : 0.25;
+            const lineAlphaBase = isDark ? 0.1 : 0.07;
+
+            particles.forEach(p => {
+                // Mouse interaction
+                const dx = p.x - mouseX;
+                const dy = p.y - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < MOUSE_DIST && dist > 0) {
+                    const force = (MOUSE_DIST - dist) / MOUSE_DIST * 0.6;
+                    p.vx += (dx / dist) * force;
+                    p.vy += (dy / dist) * force;
+                }
+
+                p.vx *= 0.98;
+                p.vy *= 0.98;
+
+                // Minimum drift
+                const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+                if (speed < 0.15) {
+                    p.vx += (Math.random() - 0.5) * 0.1;
+                    p.vy += (Math.random() - 0.5) * 0.1;
+                }
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Wrap
+                if (p.x < -10) p.x = canvas.width + 10;
+                if (p.x > canvas.width + 10) p.x = -10;
+                if (p.y < -10) p.y = canvas.height + 10;
+                if (p.y > canvas.height + 10) p.y = -10;
+
+                // Draw dot
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(' + dotR + ',' + dotG + ',' + dotB + ',' + dotAlpha + ')';
+                ctx.fill();
+            });
+
+            // Connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < CONNECT_DIST) {
+                        const opacity = (1 - dist / CONNECT_DIST) * lineAlphaBase;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = 'rgba(' + dotR + ',' + dotG + ',' + dotB + ',' + opacity.toFixed(3) + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Mouse connections
+            if (mouseX > -500) {
+                particles.forEach(p => {
+                    const dx = p.x - mouseX;
+                    const dy = p.y - mouseY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < MOUSE_DIST * 1.5) {
+                        const opacity = (1 - dist / (MOUSE_DIST * 1.5)) * lineAlphaBase * 2;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouseX, mouseY);
+                        ctx.strokeStyle = 'rgba(' + dotR + ',' + dotG + ',' + dotB + ',' + opacity.toFixed(3) + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                });
+            }
+
+            animId = requestAnimationFrame(animate);
+        }
+        animate();
+    })();
 </script>
 
 </body>
