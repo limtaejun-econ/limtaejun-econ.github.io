@@ -574,6 +574,100 @@
         .pub-list.working .pub-item { padding-left: 1.25rem; }
         .pub-list.working .pub-item::before { content: none; }
 
+        /* ===== Briefings ===== */
+        .briefing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .briefing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all var(--transition);
+        }
+        .briefing-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .briefing-video {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: var(--bg-code);
+        }
+        .briefing-video iframe,
+        .briefing-video video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .briefing-info {
+            padding: 1.25rem;
+        }
+
+        .briefing-title {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .briefing-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .briefing-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .briefing-tag {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            background: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            color: var(--accent);
+        }
+
+        .briefing-paper-link {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-teal);
+            margin-left: auto;
+        }
+        .briefing-paper-link:hover {
+            color: var(--accent);
+        }
+
+        .briefing-source {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .briefing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         /* ===== Teaching ===== */
         .teaching-grid {
             display: grid;
@@ -757,6 +851,7 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="#home">Home</a></li>
             <li><a href="#research">Research</a></li>
+            <li><a href="#briefings">Briefings</a></li>
             <li><a href="#teaching">Teaching</a></li>
             <li><a href="#cv">CV</a></li>
         </ul>
@@ -887,7 +982,7 @@
         <ul class="pub-list working">
             <li class="pub-item">
                 <div class="pub-title">"Demographic Change and Entrepreneurship: General Equilibrium Implications for Economic Dynamism"</div>
-                <div class="pub-meta"><span style="color:var(--accent-orange);font-family:var(--font-mono);font-size:0.82rem;">R&amp;R</span> &mdash; <em>Economic Modelling</em></div>
+                <div class="pub-meta"><span style="color:var(--accent-green);font-family:var(--font-mono);font-size:0.82rem;">Forthcoming</span> &mdash; <em>Economic Modelling</em></div>
             </li>
             <li class="pub-item">
                 <div class="pub-title">"Macroeconomic and Welfare Effects of Sick Leave Benefits"</div>
@@ -903,6 +998,30 @@
                 <div class="pub-meta"><span style="color:var(--accent-purple);font-family:var(--font-mono);font-size:0.82rem;">Under Review</span></div>
             </li>
         </ul>
+    </section>
+
+    <!-- Policy Briefings -->
+    <section id="briefings">
+        <div class="section-header"><span class="hash">#</span> Policy Briefings</div>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;">연구 논문 기반 정책 브리핑 영상 &mdash; <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);">Powered by NotebookLM</span></p>
+        <div class="briefing-grid">
+            <div class="briefing-card">
+                <div class="briefing-video">
+                    <iframe src="https://www.youtube.com/embed/0ZuoAQCrmEg" title="기업가정신의 미래: 정책 브리핑" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="briefing-info">
+                    <div class="briefing-title">기업가정신의 미래: 인구구조 변화와 경제적 역동성</div>
+                    <div class="briefing-desc">고령화가 창업과 경제 역동성에 미치는 일반균형 효과를 분석합니다. 인구구조 변화가 기업가정신, 고용, 생산성에 미치는 정책적 함의를 논의합니다.</div>
+                    <div class="briefing-meta">
+                        <span class="briefing-tag">#창업정책</span>
+                        <span class="briefing-tag">#고령화</span>
+                        <span class="briefing-tag">#거시경제</span>
+                        <a href="#research" class="briefing-paper-link">논문 보기 &nearr;</a>
+                    </div>
+                    <div class="briefing-source">Based on: &ldquo;Demographic Change and Entrepreneurship&rdquo; &mdash; <em>Economic Modelling</em> (Forthcoming)</div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Teaching -->
@@ -1231,6 +1350,7 @@
         const revealTargets = [
             ...document.querySelectorAll('section'),
             ...document.querySelectorAll('.pub-item'),
+            ...document.querySelectorAll('.briefing-card'),
             ...document.querySelectorAll('.teaching-card'),
             ...document.querySelectorAll('.cv-block'),
             ...document.querySelectorAll('.skills-section'),
