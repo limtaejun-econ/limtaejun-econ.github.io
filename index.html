@@ -587,6 +587,8 @@
             border-radius: 8px;
             overflow: hidden;
             transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
         }
         .briefing-card:hover {
             border-color: var(--accent);
@@ -611,6 +613,9 @@
 
         .briefing-info {
             padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .briefing-title {
@@ -626,6 +631,7 @@
             color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 0.75rem;
+            flex: 1;
         }
 
         .briefing-meta {
